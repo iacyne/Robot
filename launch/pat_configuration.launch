@@ -6,8 +6,8 @@
         <param name="odom_param" value="param_value" />
     </node>
 
-    <node pkg="transform_configuration_pkg" type="transform_configuration_type" name="transform_configuration_name" output="screen">
-        <param name="transform_configuration_param" value="param_value" />
+    <node pkg="tf" type="static_tranform_publisher" name="map_odom_broadcaster"
+        args="0 0 0 0 0 0 map odom 100"/>
     </node>
 
     <include file="$(find rplidar_ros)/launch/rplidar.launch" />
