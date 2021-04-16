@@ -1,7 +1,7 @@
 <launch>
 
     <node pkg="rplidar_ros" type="sensor_node_type" name="sensor_node_name" output="screen">
-        <param name="sensor_param" value="param_value" />
+    
     </node>
     <node pkg="odom_node_pkg" type="odom_node_type" name="odom_node" output="screen">
         <param name="odom_param" value="param_value" />
