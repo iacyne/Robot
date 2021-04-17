@@ -47,7 +47,7 @@
 
   <node name="arduino" pkg="rosserial_python" type="serial_node.py" args="/dev/ttyACM0" >
   </node>
-  <include file="$(find rplidar_ros)/launch/rplidar.launch" />
+  <include file="/home/patrouilleur/catkin_ws/src/rplidar_ros/launch/rplidar.launch" />
 
 
 
