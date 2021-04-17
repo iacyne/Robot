@@ -3,7 +3,7 @@
   <master auto="start"/>
 
   <!-- Map server -->
-  <arg name="map_file" default="$(find Robot)/maps/test_map.yaml"/>
+  <arg name="map_file" default="/home/patrouilleur/catkin_ws/src/Robot/maps/test_map.yaml"/>
   <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" />
 
   <!-- Place map frame at odometry frame -->
@@ -25,11 +25,11 @@
 
   <!-- Move base -->
   <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
-    <rosparam file="$(find Robot)/params/costmap_common_params.yaml" command="load" ns="global_costmap" />
-    <rosparam file="$(find Robot)/params/costmap_common_params.yaml" command="load" ns="local_costmap" />
-    <rosparam file="$(find Robot)/params/local_costmap_params.yaml" command="load" />
-    <rosparam file="$(find Robot)/params/global_costmap_params.yaml" command="load" />
-    <rosparam file="$(find Robot)/params/base_local_planner_params.yaml" command="load" />
+    <rosparam file="/home/patrouilleur/catkin_ws/src/Robot/params/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="/home/patrouilleur/catkin_ws/src/Robot/params/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="/home/patrouilleur/catkin_ws/src/Robot/params/local_costmap_params.yaml" command="load" />
+    <rosparam file="/home/patrouilleur/catkin_ws/src/Robot/params/global_costmap_params.yaml" command="load" />
+    <rosparam file="/home/patrouilleur/catkin_ws/src/Robot/params/base_local_planner_params.yaml" command="load" />
     
     <remap from="cmd_vel" to="cmd_vel"/>
     <remap from="odom" to="odom"/>
