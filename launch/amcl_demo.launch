@@ -27,7 +27,8 @@
     <param name="update_min_a" value="1.0"/>
   </node>-->
 
-  <include file="$(find amcl)/examples/amcl_diff.launch"/>
+  <include file="/opt/ros/noetic/share/amcl/examples/amcl_diff.launch" >
+  </include>
 
 
 
