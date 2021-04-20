@@ -13,7 +13,7 @@
   
   <node pkg="tf" type="static_transform_publisher" name="odom_base_link_broadcaster" args="0 0 0 0 0 0 odom base_link 100"/>
   <node pkg="tf" type="static_transform_publisher" name="base_link_laser_broadcaster" args="0 0 0 0 0 0 base_link laser 100"/>
-  <node pkg="tf" type="static_transform_publisher" name="laser_nav_broadcaster" args="0 0 0 0 0 0 base_link nav 100"/>
+  <node pkg="tf" type="static_transform_publisher" name="base_link_nav_broadcaster" args="0 0 0 0 0 0 base_link nav 100"/>
   
 
   <!-- Localization -->
