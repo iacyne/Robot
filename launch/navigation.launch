@@ -49,10 +49,10 @@
     <rosparam file="/home/patrouilleur/catkin_ws/base_local_planner_params.yaml" command="load" />
     
     <param name="use_map_topic" value="true"/>
-    <remap from="cmd_vel" to="cmd_vel"/>
+    <!--<remap from="cmd_vel" to="cmd_vel"/>
     <remap from="odom" to="odom"/>
     <remap from="scan" to="scan"/>
-    <!--<remap from="map" to="map" />--> 
+    <remap from="map" to="map" />--> 
   </node>
 
 </launch>
