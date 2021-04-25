@@ -61,11 +61,11 @@ void loop()
   if ( currentMillis-previousMillis>= 10){ // boucle appellé toutes les 100ms
        previousMillis=currentMillis;
        
-  distanceG = ((encoderAG+encoderBG)*2*3.14*0.035)/64;  // 0.035m=Radius of the wheels
+  distanceG = ((encoderAG+encoderBG)*2*3.14*0.035)/1920;  // 0.035m=Radius of the wheels
   encoderAG=0;
   encoderBG=0;
   
-  distanceD = ((encoderAD+encoderBD)*2*3.14*0.035)/64;  //
+  distanceD = ((encoderAD+encoderBD)*2*3.14*0.035)/1920;  //
   encoderAD=0;
   encoderBD=0;
 
