@@ -42,6 +42,7 @@ char odom[] = "/odom";
 
 void setup()
 {
+  Serial.begin(57600);
  pinMode(pin_aG,INPUT_PULLUP);
   pinMode(pin_bG,INPUT_PULLUP);
   pinMode(pin_aD,INPUT_PULLUP);
@@ -86,6 +87,7 @@ void loop()
   t.transform.translation.y = y;
   
   t.transform.rotation = tf::createQuaternionFromYaw(theta);
+
   t.header.stamp = nh.now();
   
   broadcaster.sendTransform(t);
