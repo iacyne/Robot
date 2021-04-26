@@ -2,14 +2,17 @@
 <launch>
   <master auto="start"/>
 
-  <arg name="model" default="$(find mobile_robot_autonomous_navigation)/urdf/mobile_robot.urdf.xacro"/>
-  <rosparam file="$(find mobile_robot_autonomous_navigation)/config/controllers.yaml" command="load"/>
-  <rosparam file="$(find mobile_robot_autonomous_navigation)/config/joint_limits.yaml" command="load"/>
+  <arg name="model" default="/home/patrouilleur/catkin_ws/mobile_robot.urdf.xacro"/>
+  
+  <rosparam file="/home/patrouilleur/catkin_ws/controllers.yaml" command="load"/>
+  <rosparam file="/home/patrouilleur/catkin_ws/joint_limits.yaml" command="load"/>
   <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen"
         args="
-            /mobile_robot/joints_update
-            /mobile_robot/mobile_base_controller" >
+            /pat/joints_update
+            /pat/mobile_base_controller" >
   </node>
+
+  <param name="robot_description" command="$(find xacro)/xacro.py $(arg model)" />
 
   <!-- Map server -->
   <node name="map_server" pkg="map_server" type="map_server" args="/home/patrouilleur/catkin_ws/map1.yaml" >
