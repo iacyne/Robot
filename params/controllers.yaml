@@ -1,4 +1,4 @@
-mobile_robot:
+pat:
 
     joints_update:
       type: joint_state_controller/JointStateController
