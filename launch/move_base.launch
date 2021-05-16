@@ -2,68 +2,50 @@
 <launch>
   <master auto="start"/>
 
-  <arg name="model" default="/home/patrouilleur/catkin_ws/mobile_robot.urdf.xacro"/>
-  
-  <rosparam file="/home/patrouilleur/catkin_ws/controllers.yaml" command="load"/>
-  <rosparam file="/home/patrouilleur/catkin_ws/joint_limits.yaml" command="load"/>
-  <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen"
-        args="
-            /pat/joints_update
-            /pat/mobile_base_controller" >
-  </node>
-
-  <param name="robot_description" command="$(find xacro)/xacro.py $(arg model)" />
-
   <!-- Map server -->
-  <node name="map_server" pkg="map_server" type="map_server" args="/home/patrouilleur/catkin_ws/map1.yaml" >
-    <param name="frame_id" value="map" />
-  </node>
+  <arg name="map_file" default="/home/patrouilleur/catkin_ws/src/Robot/maps/salon.yaml"/>
+  <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" />
 
   <!-- Place map frame at odometry frame -->
-  <!--<node pkg="tf" type="static_transform_publisher" name="map_odom_broadcaster" args="0 0 0 0 0 0 map odom 100"/>-->
-  <!--<node pkg="tf" type="static_transform_publisher" name="odom_base_footprint_broadcaster" args="0 0 0 0 0 0 odom base_footprint 100"/>-->
-  <!--<node pkg="tf" type="static_transform_publisher" name="base_footprint_base_link_broadcaster" args="0 0 0 0 0 0 base_footprint base_link 100"/>-->
-  <!--<node pkg="tf" type="static_transform_publisher" name="odom_base_link_broadcaster" args="0 0 0 0 0 0 odom base_link 100"/>-->
+  <!--<node pkg="tf" type="static_transform_publisher" name="map_odom_broadcaster" args="0 0 0 0 0 0 map odom 100"/>
+  <node pkg="tf" type="static_transform_publisher" name="odom_base_footprint_broadcaster" args="0 0 0 0 0 0 odom base_footprint 100"/>
+  <node pkg="tf" type="static_transform_publisher" name="base_footprint_base_link_broadcaster" args="0 0 0 0 0 0 base_footprint base_link 100"/>-->
+  
+  <node pkg="tf" type="static_transform_publisher" name="odom_base_link_broadcaster" args="0 0 0 0 0 0 odom base_link 100"/>
   <node pkg="tf" type="static_transform_publisher" name="base_link_laser_broadcaster" args="0 0 0 0 0 0 base_link laser 100"/>
   <node pkg="tf" type="static_transform_publisher" name="base_link_nav_broadcaster" args="0 0 0 0 0 0 base_link nav 100"/>
   
-  <param name="/use_sim_time" value="false"/>
+
   <!-- Localization -->
   <node pkg="amcl" type="amcl" name="amcl" output="screen">
     <remap from="scan" to="scan"/>
     <param name="use_map_topic" value="true"/>
     <param name="odom_frame_id" value="odom"/>
     <param name="odom_model_type" value="diff"/>
-    <param name="base_frame_id" value="base_footprint"/>
+    <param name="base_frame_id" value="base_link"/>
     <param name="global_frame_id" value="map"/>
-    <param name="update_min_d" value="0.05"/>
-    <param name="update_min_a" value="0.05"/>
-    <param name="transform_tolerance" value="0.2"/>
-    <param name="gui_publish_rate" value="30"/>
-    <param name="save_pose_rate" value="20"/>
-    <param name="tf_broadcast" value="true"/>
+    <param name="update_min_d" value="0.5"/>
+    <param name="update_min_a" value="1.0"/>
   </node>
 
   <!--<include file="/opt/ros/noetic/share/amcl/examples/amcl_diff.launch" />-->
   <node name="arduino" pkg="rosserial_python" type="serial_node.py" args="/dev/ttyACM0" />
-  <include file="$(find rplidar_ros)/launch/rplidar.launch" />
+  <include file="/home/patrouilleur/catkin_ws/src/rplidar_ros/launch/rplidar.launch" />
 
   <!-- Move base -->
-  <node pkg="move_base" type="move_base" name="move_base" output="screen">
+  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+    <rosparam file="/home/patrouilleur/catkin_ws/src/Robot/params/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="/home/patrouilleur/catkin_ws/src/Robot/params/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="/home/patrouilleur/catkin_ws/src/Robot/params/local_costmap_params.yaml" command="load" ns="local_costmap"/>
+    <rosparam file="/home/patrouilleur/catkin_ws/src/Robot/params/global_costmap_params.yaml" command="load" ns="global²_costmap"/>
+    <rosparam file="/home/patrouilleur/catkin_ws/src/Robot/params/base_local_planner_params.yaml" command="load" />
+
     <param name="base_global_planner" value="navfn/NavfnROS"/>
-	  <param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS"/>
-	  <param name="controller_frequency" value="10.0"/>
-    <rosparam file="/home/patrouilleur/catkin_ws/costmap_common_params.yaml" command="load" ns="global_costmap" />
-    <rosparam file="/home/patrouilleur/catkin_ws/costmap_common_params.yaml" command="load" ns="local_costmap" />
-    <rosparam file="/home/patrouilleur/catkin_ws/local_costmap_params.yaml" command="load" />
-    <rosparam file="/home/patrouilleur/catkin_ws/global_costmap_params.yaml" command="load" />
-    <rosparam file="/home/patrouilleur/catkin_ws/base_local_planner_params.yaml" command="load" />
-    
-    <param name="use_map_topic" value="true"/>
-    <!--<remap from="cmd_vel" to="cmd_vel"/>
+    <param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS"/> 
+
+    <remap from="cmd_vel" to="cmd_vel"/>
     <remap from="odom" to="odom"/>
     <remap from="scan" to="scan"/>
-    <remap from="map" to="map" />--> 
   </node>
 
 </launch>
